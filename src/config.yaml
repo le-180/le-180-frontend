@@ -2,7 +2,7 @@ site:
   name: LE-180
   site: 'https://le180.dev'
   base: '/'
-  trailingSlash: false
+  trailingSlash: true
 
 # Default SEO metadata
 metadata:

@@ -1,3 +1,4 @@
+import type Author from './author';
 export default interface Artikel {
   id: number;
   attributes: {
@@ -9,5 +10,6 @@ export default interface Artikel {
     createdAt: string;
     updatedAt: string;
     publishedAt: string;
+    Author: { data: Array<Author> };
   };
 }

@@ -20,7 +20,10 @@ const article = Astro.props;
 ---
 
 <Layout>
-  <SinglePost post={{ title: article.attributes.Title }} url={`https://http://localhost:4321/artikel${article.id}`}>
+  <SinglePost
+    post={{ title: article.attributes.Title, id: article.id.toString() }}
+    url={`https://http://localhost:4321/artikel${article.id}/`}
+  >
     {article.attributes.Text.split('\n').map((block) => <p>{block}</p>)}
   </SinglePost>
 </Layout>

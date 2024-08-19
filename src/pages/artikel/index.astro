@@ -6,24 +6,30 @@ import Layout from '../../layouts/Layout.astro';
 const articles = await fetchApi<Artikel[]>({
   endpoint: 'textes',
   wrappedByKey: 'data',
+  query: { populate: '*' },
 });
-console.log(articles);
+console.log(articles[0].attributes.Author);
+
 const articleList = articles.map((article) => {
   return {
     title: article.attributes.Title,
     url: article.id,
+    authors: article.attributes.Author.data,
   };
 });
 ---
 
 <Layout>
-  <ul>
-    {
-      articleList.map((article) => (
-        <li>
-          <a href={`/artikel/${article.url}`}>{article.title}</a>
-        </li>
-      ))
-    }
-  </ul>
+  <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
+    <ul>
+      {
+        articleList.map((article) => (
+          <li class="border-b-2">
+            <a href={`/artikel/${article.url}/`}>{article.title}</a> von{' '}
+            {article.authors.map((author) => `${author.attributes.Vorname} ${author.attributes.Nachname}`)}
+          </li>
+        ))
+      }
+    </ul>
+  </section>
 </Layout>
