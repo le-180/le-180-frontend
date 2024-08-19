@@ -1,0 +1,29 @@
+---
+import fetchApi from '../../lib/strapi';
+import type Artikel from '../../interfaces/artikel';
+import Layout from '../../layouts/Layout.astro';
+
+const articles = await fetchApi<Artikel[]>({
+  endpoint: 'textes',
+  wrappedByKey: 'data',
+});
+console.log(articles);
+const articleList = articles.map((article) => {
+  return {
+    title: article.attributes.Title,
+    url: article.id,
+  };
+});
+---
+
+<Layout>
+  <ul>
+    {
+      articleList.map((article) => (
+        <li>
+          <a href={`/artikel/${article.url}`}>{article.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</Layout>
