@@ -3,3 +3,6 @@
 /// <reference types="astro/client" />
 /// <reference types="vite/client" />
 /// <reference types="../vendor/integration/types.d.ts" />
+interface ImportMetaEnv {
+  readonly STRAPI_URL: string;
+}
