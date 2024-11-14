@@ -1,35 +1,30 @@
 ---
-import fetchApi from '../../lib/strapi';
-import type Artikel from '../../interfaces/artikel';
-import Layout from '../../layouts/Layout.astro';
+import PageLayout from '~/layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
 
-const articles = await fetchApi<Artikel[]>({
-  endpoint: 'texts',
-  wrappedByKey: 'data',
-  query: { populate: '*' },
-});
-
-const articleList = articles.map((article) => {
-  return {
-    title: article.title,
-    url: article.id,
-    authors: article.authors,
-  };
-});
-console.log('Artikel Liste', JSON.stringify(articleList));
+const articles = await getCollection('text');
+console.log(articles);
+// const articleList = articles.map((article) => {
+//   return {
+//     title: article.title,
+//     url: article.id,
+//     authors: article.authors,
+//   };
+// });
+console.log('Artikel Liste', JSON.stringify(articles));
 ---
 
-<Layout>
+<PageLayout metadata={{ title: 'Alle Artikel' }}>
   <section class="px-6 sm:px-6 py-12 sm:py-16 lg:py-20 mx-auto max-w-4xl">
     <ul>
       {
-        articleList.map((article) => (
+        articles.map((article) => (
           <li class="border-b-2">
-            <a href={`/artikel/${article.url}/`}>{article.title}</a> von{' '}
-            {article.authors.map((author) => `${author.vorname} ${author.nachname}`)}
+            <a href={`/artikel/${article.id}/`}>{article.data.title}</a> von{' '}
+            {article.data.authors?.map((author) => `${author.vorname} ${author.nachname}`)}
           </li>
         ))
       }
     </ul>
   </section>
-</Layout>
+</PageLayout>

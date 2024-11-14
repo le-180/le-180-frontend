@@ -4,6 +4,7 @@ import type { ZodTypeAny, ZodObject } from 'zod';
 
 // Configuration constants
 const STRAPI_BASE_URL = import.meta.env.STRAPI_URL || 'http://localhost:1337';
+const token = `Bearer ${import.meta.env.STRAPI_TOKEN}`;
 const SYNC_INTERVAL = 60 * 1000; // 1 minute in milliseconds
 
 /**
@@ -146,15 +147,17 @@ function generateZodSchema(attributes: Record<string, any>): ZodObject<any> {
  */
 async function fetchFromStrapi(path: string, params?: Record<string, string>): Promise<any> {
   const url = new URL(path, STRAPI_BASE_URL);
-
   if (params) {
     Object.entries(params).forEach(([key, value]) => {
       url.searchParams.set(key, value);
     });
   }
 
+  console.log(url.toString());
   try {
-    const response = await fetch(url.href);
+    const response = await fetch(url.toString(), {
+      headers: { 'Content-Type': 'application/json', Authorization: token },
+    });
     if (!response.ok) {
       throw new Error(`Failed to fetch from Strapi: ${response.statusText}`);
     }
@@ -168,7 +171,10 @@ async function fetchFromStrapi(path: string, params?: Record<string, string>): P
 // Ensure the required environment variable is set
 function checkEnvironmentVariables() {
   if (!STRAPI_BASE_URL) {
-    throw new Error('STRAPI_BASE_URL environment variable is not set');
+    throw new Error('STRAPI_URL environment variable is not set');
+  }
+  if (!token) {
+    throw new Error('STRAPI_TOKEN enviroment variable is not set');
   }
 }
 
