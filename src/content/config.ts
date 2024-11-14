@@ -1,5 +1,12 @@
 import { z, defineCollection } from 'astro:content';
+import { strapiLoader } from './../strapi-loader';
+// Define the Strapi posts collection
+// This sets up a custom loader for Strapi content
+const strapiTextLoader = defineCollection({
+  loader: strapiLoader({ contentType: 'text' }),
+});
 
+// Export the collections to be used in Astro
 const metadataDefinition = () =>
   z
     .object({
@@ -65,4 +72,5 @@ const postCollection = defineCollection({
 
 export const collections = {
   post: postCollection,
+  text: strapiTextLoader,
 };
