@@ -31,6 +31,7 @@ export default async function fetchApi<T>({ endpoint, query, wrappedByKey, wrapp
   });
   let data = await res.json();
 
+  console.log(JSON.stringify(data));
   if (wrappedByKey) {
     data = data[wrappedByKey];
   }

@@ -5,25 +5,22 @@ import Layout from '../../layouts/Layout.astro';
 import SinglePost from '../../components/blog/SinglePost.astro';
 export async function getStaticPaths() {
   const articles = await fetchApi<Artikel[]>({
-    endpoint: 'textes',
+    endpoint: 'texts',
     wrappedByKey: 'data',
   });
-  console.log(articles);
+  // console.log(articles);
   return articles.map((article) => ({
     params: { slug: article.id },
     props: article,
   }));
 }
 type Props = Artikel;
-
 const article = Astro.props;
 ---
 
 <Layout>
   <SinglePost
-    post={{ title: article.attributes.Title, id: article.id.toString() }}
+    post={{ title: article.title, id: article.id.toString() }}
     url={`https://http://localhost:4321/artikel${article.id}/`}
-  >
-    {article.attributes.Text.split('\n').map((block) => <p>{block}</p>)}
-  </SinglePost>
+  />
 </Layout>

@@ -4,19 +4,19 @@ import type Artikel from '../../interfaces/artikel';
 import Layout from '../../layouts/Layout.astro';
 
 const articles = await fetchApi<Artikel[]>({
-  endpoint: 'textes',
+  endpoint: 'texts',
   wrappedByKey: 'data',
   query: { populate: '*' },
 });
-console.log(articles[0].attributes.Author);
 
 const articleList = articles.map((article) => {
   return {
-    title: article.attributes.Title,
+    title: article.title,
     url: article.id,
-    authors: article.attributes.Author.data,
+    authors: article.authors,
   };
 });
+console.log('Artikel Liste', JSON.stringify(articleList));
 ---
 
 <Layout>
@@ -26,7 +26,7 @@ const articleList = articles.map((article) => {
         articleList.map((article) => (
           <li class="border-b-2">
             <a href={`/artikel/${article.url}/`}>{article.title}</a> von{' '}
-            {article.authors.map((author) => `${author.attributes.Vorname} ${author.attributes.Nachname}`)}
+            {article.authors.map((author) => `${author.vorname} ${author.nachname}`)}
           </li>
         ))
       }
