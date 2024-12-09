@@ -1,26 +1,30 @@
 ---
-import fetchApi from '../../lib/strapi';
-import type Artikel from '../../interfaces/artikel';
-import Layout from '../../layouts/Layout.astro';
 import SinglePost from '../../components/blog/SinglePost.astro';
+import { marked } from 'marked';
+import PageLayout from '~/layouts/PageLayout.astro';
+import { getCollection } from 'astro:content';
+import { url } from 'inspector';
 export async function getStaticPaths() {
-  const articles = await fetchApi<Artikel[]>({
-    endpoint: 'texts',
-    wrappedByKey: 'data',
-  });
-  // console.log(articles);
+  const articles = await getCollection('text');
   return articles.map((article) => ({
     params: { slug: article.id },
     props: article,
   }));
 }
-type Props = Artikel;
 const article = Astro.props;
+const textbody = await marked.parse(article.data.textbody, {});
+console.log('ordnungspunkt', article.data.ordnungspunkt);
 ---
 
-<Layout>
+<PageLayout>
+  <div class="grid"></div>
   <SinglePost
-    post={{ title: article.title, id: article.id.toString() }}
-    url={`https://http://localhost:4321/artikel${article.id}/`}
-  />
-</Layout>
+    post={{
+      title: article.data?.title,
+      id: article.id.toString(),
+      ordnungspunkt: { title: article.data.ordnungspunkt?.title, id: article.data.ordnungspunkt?.id },
+    }}
+    url={`http://localhost:4321/artikel${article.id}/`}
+    ><div set:html={textbody} />
+  </SinglePost>
+</PageLayout>

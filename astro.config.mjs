@@ -26,7 +26,9 @@ const whenExternalScripts = (items = []) =>
 
 export default defineConfig({
   output: 'static',
-
+  experimental: {
+    contentLayer: true,
+  },
   integrations: [
     tailwind({
       applyBaseStyles: false,
