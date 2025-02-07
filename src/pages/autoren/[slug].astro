@@ -1,0 +1,12 @@
+---
+import { getCollection } from 'astro:content';
+import { marked } from 'marked';
+export async function getStaticPaths() {
+    const texts = await getCollection('autor');
+    return texts.map((text) => ({
+        params: { slug: text.id },
+        props: text,
+    }));
+}
+const article = Astro.props;
+---

@@ -1,0 +1,30 @@
+---
+import { getCollection, getEntry } from 'astro:content';
+import { marked } from 'marked';
+import Main from '../../layouts/main.astro';
+import Prose from '../../components/Prose.astro';
+export async function getStaticPaths() {
+    const texts = await getCollection('text');
+    return texts.map((text) => {
+        const currentText = getEntry('text', text.id);
+        return {
+            params: { slug: text.data.title.toLocaleLowerCase().replaceAll(' ', '-') },
+            props: { id: text.id, text },
+        };
+    });
+}
+const { id, text } = Astro.props;
+const textbody = await marked(text.data.textbody, { async: true });
+---
+
+<Main pageTitle={text.data.title}>
+    <article class="grid justify-center min-w-page gap-y-5">
+        <h1 class="text-4xl">{text.data?.title}</h1>
+        <div class="border-black border-2 p-3">
+            <p class="italic">{text.data.these}</p>
+        </div>
+        <Prose>
+            <div set:html={textbody} />
+        </Prose>
+    </article>
+</Main>

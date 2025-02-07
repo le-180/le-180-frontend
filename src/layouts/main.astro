@@ -1,15 +1,26 @@
 ---
-const { content } = Astro.props;
+import Navbar from '../components/Navbar.astro';
+
+interface Props {
+    pageTitle: string;
+}
+const { pageTitle } = Astro.props;
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<title>{content.title}</title>
-	</head>
-	<body>
-		<slot />
-	</body>
+<html lang="de" data-theme="light">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+        <title>{pageTitle}</title>
+    </head>
+    <body>
+        <div class="">
+            <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS"></button>
+            <div class="container flex flex-col justify-center px-6 py-6 mx-auto sm:py-12">
+                <Navbar />
+                <slot />
+            </div>
+        </div>
+    </body>
 </html>

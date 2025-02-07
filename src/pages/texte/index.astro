@@ -1,0 +1,52 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import { getCollection, getEntries } from 'astro:content';
+import PageLayout from '../../components/PageLayout.astro';
+import Main from '../../layouts/main.astro';
+import { getEntry } from 'astro:content';
+
+const articles = await getCollection('text');
+const articlesWithRenderedAutor: Array<
+    CollectionEntry<'text'> & { data: { renderedAutor: Array<CollectionEntry<'autor'>> } }
+> = await Promise.all(
+    articles.map(async (article) => {
+        // Choose getEntries if 'autor' is an array; otherwise, use getEntry.
+        const renderedAutor = await getEntries(article.data.autor);
+        return {
+            ...article,
+            data: {
+                ...article.data,
+                renderedAutor,
+            },
+        };
+    })
+);
+console.log(JSON.stringify(articles));
+---
+
+<Main pageTitle="Unsere Texte">
+    <h2 class="mt-10 text-3xl mx-auto">Texte</h2>
+    <div class="grid mt-5 lg:grid-cols-3 gap-y-14 lg:gap-10">
+        {
+            articles.map((article) => (
+                <div>
+                    <h3 class="mt-5 text-2xl font-bold">{article.data.title}</h3>
+                    <p class="mt-3 text-gray-500">
+                        Equity agile development burn rate buyer strategy founders user experience customer. Termsheet
+                        series A financing direct mailing infrastructure research &amp; development twitter.
+                    </p>
+                    <div class="flex mt-5 space-x-3">
+                        <div class="flex flex-col">
+                            <span class="font-medium">
+                                {article.data.renderedAutor.map((author) => author.data.name + ' ' + author.nachname)}
+                            </span>
+                            <span class="text-gray-500">
+                                {new Date(article.data.publishedAt).toLocaleDateString('de-DE')}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            ))
+        }
+    </div>
+</Main>
