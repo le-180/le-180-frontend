@@ -1,6 +1,7 @@
 [
   {
     "id": "1",
-    "name": "Daniel"
+    "name": "Daniel",
+    "profilbild": "./src/assets/autoren/daniel.png"
   }
 ]

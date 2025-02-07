@@ -1,41 +1,52 @@
 ---
 import { getCollection } from 'astro:content';
 import PageLayout from '../../components/PageLayout.astro';
-
+import Main from '../../layouts/main.astro';
+import danielimage from '../../assets/profilbilder/daniel.png';
+import Image from 'astro/components/Image.astro';
+const images = import.meta.glob('../../assets/profilbilder/*', { eager: true });
+console.log(images);
 const autoren = await getCollection('autor');
-const STRAPI_BASE_URL = import.meta.env.STRAPI_URL || 'http://localhost:1337';
 ---
 
-<PageLayout>
-    <h2 class="mt-10 text-3xl">Autoren</h2>
+<Main pageTitle="Autoren">
+    <h2 class="mt-10 text-3xl mx-auto">Autoren</h2>
     <div class="grid mt-5 lg:grid-cols-3 gap-y-14 lg:gap-10">
         {
-            autoren.map((autor) => (
-                <div>
-                    <div class="flex space-x-3 items-center">
-                        {autor.data.profilbild && (
-                            <div class="flex-shrink-0">
-                                <img
-                                    class="object-cover w-12 h-12 rounded-full"
-                                    src={STRAPI_BASE_URL + autor.data.profilbild.url}
-                                    alt="image"
-                                />
+            autoren.map((autor) => {
+                const pathParts = autor.data.profilbild.split('/');
+                const fileName = pathParts[pathParts.length - 1];
+                const imageKey = `../../assets/profilbilder/${fileName}`;
+                console.log('imageKey', imageKey);
+                const imageModule: ImageMetadata = images[imageKey].default;
+                console.log('imageModule', imageModule);
+
+                return (
+                    <div>
+                        <div class="flex space-x-3 items-center">
+                            {autor.data.profilbild && (
+                                <div class="avatar">
+                                    <div class="w-24 rounded-full">
+                                        <Image src={imageModule} alt={'Profilbild von ' + autor.name} />
+                                    </div>
+                                </div>
+                            )}
+                            <div>
+                                <h3 class="text-2xl font-bold">
+                                    {autor.data.name}
+                                    {/* {autor.data.nachname} */}
+                                </h3>
                             </div>
-                        )}
-                        <div>
-                            <h3 class="text-2xl font-bold">
-                                {autor.data.vorname} {autor.data.nachname}
-                            </h3>
+                        </div>
+                        <div class="flex mt-5 space-x-3">
+                            <div class="flex flex-col">
+                                <span class="font-medium" />
+                                <span class="text-gray-500" />
+                            </div>
                         </div>
                     </div>
-                    <div class="flex mt-5 space-x-3">
-                        <div class="flex flex-col">
-                            <span class="font-medium" />
-                            <span class="text-gray-500" />
-                        </div>
-                    </div>
-                </div>
-            ))
+                );
+            })
         }
     </div>
-</PageLayout>
+</Main>

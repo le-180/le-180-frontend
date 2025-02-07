@@ -5,12 +5,16 @@ import PageLayout from '../../components/PageLayout.astro';
 import Main from '../../layouts/main.astro';
 import { getEntry } from 'astro:content';
 
+type AugmentedArticle = CollectionEntry<'text'> & {
+    data: CollectionEntry<'text'>['data'] & {
+        renderedAutor: Array<CollectionEntry<'autor'>>;
+    };
+};
+
 const articles = await getCollection('text');
-const articlesWithRenderedAutor: Array<
-    CollectionEntry<'text'> & { data: { renderedAutor: Array<CollectionEntry<'autor'>> } }
-> = await Promise.all(
-    articles.map(async (article) => {
-        // Choose getEntries if 'autor' is an array; otherwise, use getEntry.
+const articlesWithRenderedAutor: AugmentedArticle[] = await Promise.all(
+    articles.map(async (article: CollectionEntry<'text'>) => {
+        // Resolve the author references (getEntries returns an array)
         const renderedAutor = await getEntries(article.data.autor);
         return {
             ...article,
@@ -18,7 +22,7 @@ const articlesWithRenderedAutor: Array<
                 ...article.data,
                 renderedAutor,
             },
-        };
+        } as AugmentedArticle;
     })
 );
 console.log(JSON.stringify(articles));
@@ -28,8 +32,8 @@ console.log(JSON.stringify(articles));
     <h2 class="mt-10 text-3xl mx-auto">Texte</h2>
     <div class="grid mt-5 lg:grid-cols-3 gap-y-14 lg:gap-10">
         {
-            articles.map((article) => (
-                <div>
+            articlesWithRenderedAutor.map((article) => (
+                <div class="border-black">
                     <h3 class="mt-5 text-2xl font-bold">{article.data.title}</h3>
                     <p class="mt-3 text-gray-500">
                         Equity agile development burn rate buyer strategy founders user experience customer. Termsheet
@@ -38,11 +42,11 @@ console.log(JSON.stringify(articles));
                     <div class="flex mt-5 space-x-3">
                         <div class="flex flex-col">
                             <span class="font-medium">
-                                {article.data.renderedAutor.map((author) => author.data.name + ' ' + author.nachname)}
+                                {article.data.renderedAutor.map((author: CollectionEntry<'autor'>) => author.data.name)}
                             </span>
-                            <span class="text-gray-500">
+                            {/* <span class="text-gray-500">
                                 {new Date(article.data.publishedAt).toLocaleDateString('de-DE')}
-                            </span>
+                            </span> */}
                         </div>
                     </div>
                 </div>

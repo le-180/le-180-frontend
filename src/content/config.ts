@@ -20,6 +20,7 @@ const autorLoader = defineCollection({
     loader: file('./src/content/autoren/autoren.json'),
     schema: z.object({
         name: z.string(),
+        profilbild: z.string(),
     }),
 });
 
