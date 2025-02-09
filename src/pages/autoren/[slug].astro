@@ -1,12 +1,17 @@
 ---
 import { getCollection } from 'astro:content';
 import { marked } from 'marked';
+import Main from '../../layouts/main.astro';
 export async function getStaticPaths() {
-    const texts = await getCollection('autor');
-    return texts.map((text) => ({
-        params: { slug: text.id },
-        props: text,
+    const autoren = await getCollection('autor');
+    return autoren.map((autor) => ({
+        params: { slug: autor.id },
+        props: autor,
     }));
 }
-const article = Astro.props;
+const autor = Astro.props;
 ---
+
+<Main pageTitle={autor.data.name}>
+    <h1 class="text-4xl text-center mt-10">{autor.data.name}</h1>
+</Main>

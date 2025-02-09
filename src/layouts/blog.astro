@@ -1,0 +1,10 @@
+---
+import Main from './main.astro';
+const { pageTitle } = Astro.props;
+---
+
+<Main pageTitle={pageTitle}>
+    <div class="mt-5">
+        <slot />
+    </div>
+</Main>

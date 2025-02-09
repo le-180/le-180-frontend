@@ -19,7 +19,9 @@ const { pageTitle } = Astro.props;
             <button data-toggle-theme="dark,light" data-act-class="ACTIVECLASS"></button>
             <div class="container flex flex-col justify-center px-6 py-6 mx-auto sm:py-12">
                 <Navbar />
-                <slot />
+                <div class="mx-20">
+                    <slot />
+                </div>
             </div>
         </div>
     </body>

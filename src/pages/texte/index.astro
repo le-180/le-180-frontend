@@ -1,9 +1,7 @@
 ---
 import type { CollectionEntry } from 'astro:content';
-import { getCollection, getEntries } from 'astro:content';
-import PageLayout from '../../components/PageLayout.astro';
+import { getCollection, getEntries, render } from 'astro:content';
 import Main from '../../layouts/main.astro';
-import { getEntry } from 'astro:content';
 
 type AugmentedArticle = CollectionEntry<'text'> & {
     data: CollectionEntry<'text'>['data'] & {
@@ -36,18 +34,22 @@ console.log(JSON.stringify(articles));
                 <div class="border-black">
                     <h3 class="mt-5 text-2xl font-bold">{article.data.title}</h3>
                     <p class="mt-3 text-gray-500">
-                        Equity agile development burn rate buyer strategy founders user experience customer. Termsheet
-                        series A financing direct mailing infrastructure research &amp; development twitter.
+                        {article.body?.substring(0, 200)}...
+                        <a href={'/texte/' + article.id} class="btn btn-link">
+                            weiter lesen
+                        </a>
                     </p>
-                    <div class="flex mt-5 space-x-3">
-                        <div class="flex flex-col">
-                            <span class="font-medium">
+                    <div class="flex mt-5 space-x-3 justify-between">
+                        <div class="font-medium">
+                            <span>
+                                {' '}
                                 {article.data.renderedAutor.map((author: CollectionEntry<'autor'>) => author.data.name)}
                             </span>
-                            {/* <span class="text-gray-500">
+                        </div>
+                        {/* <span class="text-gray-500">
                                 {new Date(article.data.publishedAt).toLocaleDateString('de-DE')}
                             </span> */}
-                        </div>
+                        <div />
                     </div>
                 </div>
             ))
