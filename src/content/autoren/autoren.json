@@ -3,5 +3,10 @@
     "id": "1",
     "name": "Daniel",
     "profilbild": "./src/assets/autoren/daniel.png"
+  },
+  {
+    "id": "2",
+    "name": "Valentin",
+    "profilbild": "./src/assets/autoren/daniel.png"
   }
 ]
