@@ -22,12 +22,12 @@ const autoren = await getCollection('autor');
                 console.log('imageModule', imageModule);
 
                 return (
-                    <div>
+                    <a href={`/autoren/${autor.id}`}>
                         <div class="flex space-x-3 items-center">
                             {autor.data.profilbild && (
                                 <div class="avatar">
                                     <div class="w-24 rounded-full">
-                                        <Image src={imageModule} alt={'Profilbild von ' + autor.name} />
+                                        <Image src={imageModule} alt={'Profilbild von ' + autor.data.name} />
                                     </div>
                                 </div>
                             )}
@@ -44,7 +44,7 @@ const autoren = await getCollection('autor');
                                 <span class="text-gray-500" />
                             </div>
                         </div>
-                    </div>
+                    </a>
                 );
             })
         }

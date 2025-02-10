@@ -1,6 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import { marked } from 'marked';
+import Image from 'astro/components/Image.astro';
 import Main from '../../layouts/main.astro';
 export async function getStaticPaths() {
     const autoren = await getCollection('autor');
@@ -10,8 +10,25 @@ export async function getStaticPaths() {
     }));
 }
 const autor = Astro.props;
+const images = import.meta.glob('../../assets/profilbilder/*', { eager: true });
+const pathParts = autor.data.profilbild.split('/');
+const fileName = pathParts[pathParts.length - 1];
+const imageKey = `../../assets/profilbilder/${fileName}`;
+console.log('imageKey', imageKey);
+const imageModule: ImageMetadata = images[imageKey].default;
 ---
 
 <Main pageTitle={autor.data.name}>
-    <h1 class="text-4xl text-center mt-10">{autor.data.name}</h1>
+    <div class="grid grid-cols-1 gap-5">
+        <div>
+            <h1 class="text-4xl text-center mt-10">{autor.data.name}</h1>
+        </div>
+        <div class="mx-auto">
+            <div class="avatar">
+                <div class="w-24 rounded-full">
+                    <Image src={imageModule} alt={'Profilbild von ' + autor.data.name} />
+                </div>
+            </div>
+        </div>
+    </div>
 </Main>
