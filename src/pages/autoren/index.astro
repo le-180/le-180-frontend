@@ -1,8 +1,6 @@
 ---
 import { getCollection } from 'astro:content';
-import PageLayout from '../../components/PageLayout.astro';
 import Main from '../../layouts/main.astro';
-import danielimage from '../../assets/profilbilder/daniel.png';
 import Image from 'astro/components/Image.astro';
 const images = import.meta.glob('../../assets/profilbilder/*', { eager: true });
 console.log(images);
@@ -19,7 +17,7 @@ const autoren = await getCollection('autor');
                 const imageKey = `../../assets/profilbilder/${fileName}`;
                 console.log('imageKey', imageKey);
                 const imageModule: ImageMetadata = images[imageKey].default;
-                console.log('imageModule', imageModule);
+                // console.log('imageModule', imageModule);
 
                 return (
                     <a href={`/autoren/${autor.id}`}>
@@ -27,7 +25,7 @@ const autoren = await getCollection('autor');
                             {autor.data.profilbild && (
                                 <div class="avatar">
                                     <div class="w-24 rounded-full">
-                                        <Image src={imageModule} alt={'Profilbild von ' + autor.data.name} />
+                                        {/* <Image src={imageModule} alt={'Profilbild von ' + autor.data.name} /> */}
                                     </div>
                                 </div>
                             )}
