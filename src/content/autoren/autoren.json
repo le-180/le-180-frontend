@@ -1,17 +1,17 @@
 [
   {
     "id": "1",
-    "name": "Daniel",
-    "profilbild": "./src/assets/autoren/daniel.png"
+    "name": "Daniel Urso",
+    "profilbild": "../../assets/profilbilder/daniel.png"
   },
   {
     "id": "2",
     "name": "Valentin",
-    "profilbild": "./src/assets/autoren/daniel.png"
+    "profilbild": "../../assets/profilbilder/daniel.png"
   },
   {
     "id": "3",
     "name": "Denise Gelleszun",
-    "profilbild": "./src/assets/autoren/daniel.png"
+    "profilbild": "../../assets/profilbilder/daniel.png"
   }
 ]

@@ -1,9 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Main from '../../layouts/main.astro';
-import Image from 'astro/components/Image.astro';
-const images = import.meta.glob('../../assets/profilbilder/*', { eager: true });
-console.log(images);
+import { Image } from 'astro:assets';
 const autoren = await getCollection('autor');
 ---
 
@@ -12,20 +10,13 @@ const autoren = await getCollection('autor');
     <div class="grid mt-5 lg:grid-cols-3 gap-y-14 lg:gap-10">
         {
             autoren.map((autor) => {
-                const pathParts = autor.data.profilbild.split('/');
-                const fileName = pathParts[pathParts.length - 1];
-                const imageKey = `../../assets/profilbilder/${fileName}`;
-                console.log('imageKey', imageKey);
-                const imageModule: ImageMetadata = images[imageKey].default;
-                // console.log('imageModule', imageModule);
-
                 return (
-                    <a href={`/autoren/${autor.id}`}>
+                    <a href={`/autoren/${autor.data.name.split(' ').join('-').toLowerCase()}`}>
                         <div class="flex space-x-3 items-center">
                             {autor.data.profilbild && (
                                 <div class="avatar">
                                     <div class="w-24 rounded-full">
-                                        {/* <Image src={imageModule} alt={'Profilbild von ' + autor.data.name} /> */}
+                                        <Image src={autor.data.profilbild} alt={'Profilbild von ' + autor.data.name} />
                                     </div>
                                 </div>
                             )}

@@ -18,10 +18,11 @@ const textLoader = defineCollection({
 });
 const autorLoader = defineCollection({
     loader: file('./src/content/autoren/autoren.json'),
-    schema: z.object({
-        name: z.string(),
-        profilbild: z.string(),
-    }),
+    schema: ({ image }) =>
+        z.object({
+            name: z.string(),
+            profilbild: image(),
+        }),
 });
 
 export const collections = {
